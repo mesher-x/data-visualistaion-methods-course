@@ -1,0 +1,73 @@
+<body>
+    <style>
+        body {
+            height: 70vh;
+        }
+        body > svg {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <div id="topLevel">
+        <input id="graphWidth" type="text" style="width: 3em">
+    </div>
+    <script type="module">
+        import {treeCoords} from "./js/tree.js"
+        import {randomTree} from "./js/random-graphs.js"
+        import {drawGraph, initSVG} from "./js/draw-graph.js"
+        import * as Files from "./js/read-GraphML.js"
+        import {randomDAG} from "./js/random-graphs.js"
+        import {DAGCoords} from "./js/dag.js"
+
+        let clone = x => Object.assign(Object.create(Object.getPrototypeOf(x)), x)
+        let rand = r => Math.ceil(r * Math.random())
+
+        let svg = initSVG()
+
+        let parent = document.getElementById("topLevel")
+
+        let button = document.createElement("button")
+        button.textContent = "Choose tree"
+        var drawTree = (graph) => drawGraph(treeCoords(clone(graph)))
+        button.onclick = () => Files.selectGraph(drawTree)
+        parent.appendChild(button)
+
+        button = document.createElement("button")
+        button.textContent = "random tree"
+        button.onclick = () => {
+            let graph = randomTree(rand(50))
+            drawGraph(treeCoords(clone(graph)))
+        }
+        parent.appendChild(button)
+
+        //////////////////////////////
+
+        function getWidth() {
+            let graphWidth = document.getElementById("graphWidth")
+            let inputValue = graphWidth.value
+            let width = parseInt(graphWidth.value)
+            if (!width || width <= 0) {
+                width = null
+            }
+            return width
+        }
+
+        button = document.createElement("button")
+        button.textContent = "Choose DAG"
+        button.onclick = () => {
+            let w = getWidth()
+            var drawDAG = (graph) => drawGraph(DAGCoords(clone(graph), w))
+            Files.selectGraph(drawDAG)
+        }
+        parent.appendChild(button)
+
+        button = document.createElement("button")
+        button.textContent = "random DAG"
+        button.onclick = () => {
+            let w = getWidth()
+            let graph = randomDAG(rand(20))
+            drawGraph(DAGCoords(clone(graph)), w)
+        }
+        parent.appendChild(button)
+    </script>
+</body>

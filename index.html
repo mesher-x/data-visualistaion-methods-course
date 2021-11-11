@@ -8,9 +8,8 @@
             height: 100%;
         }
     </style>
-    <div id="topLevel">
-        <input id="graphWidth" type="text" style="width: 3em">
-    </div>
+    <div id="forButtons"></div>
+    max graph width for DAG: <input type="number" name="max graph width" id="graphWidth"><br>
     <script type="module">
         import {treeCoords} from "./js/tree.js"
         import {randomTree} from "./js/random-graphs.js"
@@ -24,7 +23,7 @@
 
         let svg = initSVG()
 
-        let parent = document.getElementById("topLevel")
+        let parent = document.getElementById("forButtons")
 
         let button = document.createElement("button")
         button.textContent = "Choose tree"
@@ -66,7 +65,7 @@
         button.onclick = () => {
             let w = getWidth()
             let graph = randomDAG(rand(20))
-            drawGraph(DAGCoords(clone(graph)), w)
+            drawGraph(DAGCoords(clone(graph), w))
         }
         parent.appendChild(button)
     </script>

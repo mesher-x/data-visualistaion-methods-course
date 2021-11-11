@@ -227,6 +227,8 @@ function setGraphCoords(graph, lvls) {
 }
 
 export function DAGCoords(graph, width = null, addDummies = true) {
+    console.log("in DAGCoords width = ")
+    console.log(width)
     graph = graph.copy()
     let lvls = width ? buildLayersSimple(graph, width) : buildLayers(graph)
     if (addDummies) addDummyVertices(graph, lvls)
